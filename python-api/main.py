@@ -36,7 +36,7 @@ class TicketInput(BaseModel):
         created_at: Fecha de creación del ticket
     """
     ticket_id: str
-    text: str
+    description: str
     created_at: datetime
     # Ejemplo para la documentación automática
     model_config = {
@@ -44,7 +44,7 @@ class TicketInput(BaseModel):
             "examples": [
                 {
                     "ticket_id": "123e4567-e89b-12d3-a456-426614174000",
-                    "text": "Mi pedido llegó dañado y nadie me responde. Estoy muy frustrado con el servicio.",
+                    "description": "Mi pedido llegó dañado y nadie me responde. Estoy muy frustrado con el servicio.",
                     "created_at": "2026-01-21T10:00:00Z"
                 }
             ]
