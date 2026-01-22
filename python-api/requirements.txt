@@ -1,0 +1,15 @@
+# FastAPI - Framework web moderno y rápido
+fastapi==0.115.0
+uvicorn[standard]==0.30.6
+
+# Hugging Face Hub - Para conectar con modelos de HF
+huggingface-hub>=0.28.0
+
+# Supabase - Cliente para la base de datos
+supabase==2.10.0
+
+# Variables de entorno
+python-dotenv==1.0.1
+
+# Pydantic - Validación de datos (ya viene con FastAPI pero lo especificamos)
+pydantic==2.9.2
