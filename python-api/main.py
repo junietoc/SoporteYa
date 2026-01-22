@@ -32,7 +32,7 @@ class TicketInput(BaseModel):
     
     Atributos:
         ticket_id: ID único del ticket en Supabase
-        text: El texto del ticket a procesar
+        description: El texto del ticket a procesar
         created_at: Fecha de creación del ticket
     """
     ticket_id: str
@@ -97,7 +97,7 @@ async def process_ticket(ticket: TicketInput):
     try:
         # 1. Analizar el ticket con el LLM
         analyzer = TicketAnalyzer()
-        result = analyzer.analyze(ticket.text)
+        result = analyzer.analyze(ticket.description)
         
         # 2. Actualizar en Supabase
         update_ticket_as_processed(
