@@ -109,6 +109,7 @@ async def process_ticket(ticket: TicketInput):
         # 3. Retornar resultado
         return TicketOutput(
             ticket_id=ticket.ticket_id,
+            description=ticket.description,
             category=result["category"],
             sentiment=result["sentiment"],
             processed=True
