@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import type { RealtimePostgresChangesPayload } from '@supabase/supabase-js'
 import { supabase } from '../lib/supabase'
 import type { Ticket } from '../types/database'
 import { TicketCard } from './TicketCard'
@@ -46,7 +47,7 @@ export function Dashboard() {
           schema: 'public',
           table: 'tickets',
         },
-        (payload) => {
+        (payload: RealtimePostgresChangesPayload<Ticket>) => {
           console.log('New ticket:', payload)
           setTickets((prev) => [payload.new as Ticket, ...prev])
         }
@@ -58,11 +59,11 @@ export function Dashboard() {
           schema: 'public',
           table: 'tickets',
         },
-        (payload) => {
+        (payload: RealtimePostgresChangesPayload<Ticket>) => {
           console.log('Updated ticket:', payload)
           setTickets((prev) =>
             prev.map((ticket) =>
-              ticket.id === payload.new.id ? (payload.new as Ticket) : ticket
+              ticket.id === (payload.new as Ticket).id ? (payload.new as Ticket) : ticket
             )
           )
         }
@@ -74,10 +75,10 @@ export function Dashboard() {
           schema: 'public',
           table: 'tickets',
         },
-        (payload) => {
+        (payload: RealtimePostgresChangesPayload<Ticket>) => {
           console.log('Deleted ticket:', payload)
           setTickets((prev) =>
-            prev.filter((ticket) => ticket.id !== payload.old.id)
+            prev.filter((ticket) => ticket.id !== (payload.old as Ticket).id)
           )
         }
       )
