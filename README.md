@@ -15,7 +15,9 @@ Archivo json `SoporteYaWorkflow-n8n.json` en la carpeta `/n8n-workflow`
 Url de la web desplegada: https://soporteya.netlify.app/
 
 ## Prompt Engineering
-El análisis de sentimiento y categorización de tickets fue implementado utilizando la técnica de **Persona Prompt Pattern**, donde se le asigna al modelo un rol específico de experto:
+El análisis de sentimiento y categorización de tickets fue implementado utilizando el modelo **Qwen2.5-7B-Instruct** de Alibaba Cloud, accedido a través de la API de Hugging Face Inference.
+
+Se utilizó la técnica de **Persona Prompt Pattern**, donde se le asigna al modelo un rol específico de experto:
 
 ```
 Eres un asistente experto en análisis de tickets de soporte al cliente.
