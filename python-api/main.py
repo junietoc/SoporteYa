@@ -58,11 +58,13 @@ class TicketOutput(BaseModel):
     
     Atributos:
         ticket_id: ID del ticket procesado
+        description: Descripción original del ticket
         category: Categoría detectada por el LLM
         sentiment: Sentimiento detectado (positivo, negativo, neutro)
         processed: Si se procesó correctamente
     """
     ticket_id: str
+    description: str
     category: str
     sentiment: str
     processed: bool
