@@ -1,0 +1,152 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "1783f1be-7565-471b-8674-2e8416250d38",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "aefaf37f-4f97-497d-8239-e8c67af8117d",
+      "name": "Nuevo ticket",
+      "webhookId": "1783f1be-7565-471b-8674-2e8416250d38"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://soporteya.onrender.com/process-ticket",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"ticket_id\": \"{{ $json.body.record.id }}\",\n  \"description\": \"{{ $json.body.record.description }}\",\n  \"created_at\":\"{{ $json.body.record.created_at }}\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        192,
+        0
+      ],
+      "id": "1ba1ae8f-2cf7-4fbe-9291-2a8a05b9b8ae",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "50c1f543-1b61-4fdf-877e-49b95504a58a",
+              "leftValue": "={{ $json.sentiment }}",
+              "rightValue": "negativo",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        400,
+        0
+      ],
+      "id": "d66c782a-0dc8-42b9-bf09-9fa12ca3f81e",
+      "name": "es un ticket negativo?"
+    },
+    {
+      "parameters": {
+        "sendTo": "junietoc@unal.edu.co",
+        "subject": "SoporteYa: Ticket negativo detectado",
+        "message": "=<div style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 500px; margin: 0 auto; background-color: #ffffff;\">\n  \n  <!-- Encabezado -->\n  <div style=\"padding: 24px 24px 0 24px; border-bottom: 1px solid #e5e5e5;\">\n    <div style=\"display: flex; align-items: center; margin-bottom: 20px;\">\n      <span style=\"font-size: 18px; margin-right: 8px;\">☸️</span>\n      <span style=\"font-size: 16px; font-weight: 600; color: #171717;\">SoporteYa</span>\n    </div>\n  </div>\n\n  <!-- Contenido Principal -->\n  <div style=\"padding: 24px;\">\n    \n    <div style=\"background-color: #fef2f2; border: 1px solid #fecaca; border-radius: 6px; padding: 12px 16px; margin-bottom: 24px;\">\n      <span style=\"font-size: 14px; color: #dc2626; font-weight: 500;\">Sentimiento negativo detectado</span>\n    </div>\n\n    <p style=\"color: #525252; font-size: 14px; margin: 0 0 24px 0; line-height: 1.5;\">\n      Se ha recibido un nuevo ticket que requiere atención.\n    </p>\n\n    <!-- Detalles -->\n    <div style=\"border: 1px solid #e5e5e5; border-radius: 6px; padding: 16px; margin-bottom: 24px;\">\n      \n      <div style=\"margin-bottom: 16px;\">\n        <span style=\"font-size: 12px; color: #a3a3a3; display: block; margin-bottom: 4px;\">Categoría</span>\n        <span style=\"font-size: 14px; color: #171717;\">{{ $json.category }}</span>\n      </div>\n\n      <div>\n        <span style=\"font-size: 12px; color: #a3a3a3; display: block; margin-bottom: 4px;\">Descripción</span>\n        <p style=\"margin: 0; color: #525252; font-size: 14px; line-height: 1.5;\">\n          \"{{ $('Nuevo ticket').item.json.body.record.description }}\"\n        </p>\n      </div>\n      \n    </div>\n\n    <!-- Botón -->\n    <a href=\"https://soporteya.netlify.app/\" style=\"background-color: #171717; color: #ffffff; padding: 10px 20px; text-decoration: none; border-radius: 6px; font-weight: 500; font-size: 14px; display: inline-block;\">\n      Ver Dashboard\n    </a>\n\n  </div>\n\n  <!-- Pie de página -->\n  <div style=\"padding: 16px 24px; border-top: 1px solid #e5e5e5;\">\n    <p style=\"margin: 0; font-size: 12px; color: #a3a3a3;\">\n      Vivetori AI System\n    </p>\n  </div>\n\n</div>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        608,
+        -96
+      ],
+      "id": "e26fbbe7-1c7a-4046-bbdd-14a22bb6e479",
+      "name": "Send a message",
+      "webhookId": "a6f74b7e-8329-4dce-a901-c5b4428d314a",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "xRwN6Bd55XW5DVgT",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Nuevo ticket": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "es un ticket negativo?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "es un ticket negativo?": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "5d870b5d-a3f0-4e99-b879-24c412e2dd77",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "7fb3d26af26ea4af8fd7aa82977112c8971fc3b2d3bb7875992f9f45bdd933c8"
+  },
+  "id": "WpEL_Dd91MGj8Y3JQscg2",
+  "tags": []
+}
